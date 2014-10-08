@@ -168,6 +168,8 @@
                     $sodPrefix          = $sod.data("prefix"),
                     $optionParent       = $option.parent(),
                     $optionText         = $option.text(),
+                    $optionColor        = $option.data('color') ? $option.data("color") : "",
+                    $optionHTML         = '<span>'+$optionText+'</span><i class="square" style="background-color:'+$optionColor+';"></i>',
                     $optionValue        = $option.val(),
                     $optionCustomId     = $option.data("custom-id") ? $option.data("custom-id") : null,
                     $optionCustomClass  = $option.data("custom-class") ? $option.data("custom-class") : "",
@@ -178,17 +180,17 @@
 
                 // Create <li> for each <option>
                 if ( $option.is("option") ) { // If <option>
-                    $("<span/>", {
+                    $('<span/>', {
                         "class":      "sod_option " + $optionCustomClass + $optionIsDisabled + $optionIsSelected + $optionLink + $optionLinkExternal,
                         id:           $optionCustomId,
                         title:        $optionText,
-                        html:         $optionText,
+                        html:         $optionHTML,
                         "data-value": $optionValue
                     }).appendTo( $sodList );
 
                     // If selected and no placeholder is set, update label
                     if ( $optionIsSelected && !$sodPlaceholder || $optionIsSelected && $sodPrefix ) {
-                        $sod.find(".sod_label").append($optionText);
+                        $sod.find(".sod_label").append($optionHTML).addClass($optionCustomClass);
                     }
 
                     // Set the SoD data-label (used in the blur event)
@@ -372,7 +374,7 @@
                     $optionOptgroup = $clicked.hasClass("optgroup"),
                     $optionIndex    = $sod.find(".sod_option:not('.optgroup')").index(this);
 
-                if ($sod.hasClass("touch")) {
+                 if ($sod.hasClass("touch")) {
                     return;
                 }
 
@@ -382,6 +384,7 @@
                     $clicked.addClass("selected");
                     $sod.find("select option")[$optionIndex].selected = true;
                     $sod.find("select").change();
+                    _private.blurSod($sod); 
                 }
 
                 // Clear viewport check timeout
@@ -396,10 +399,14 @@
                 var $select         = $(this),
                     $optionSelected = $select.find(":selected"),
                     $optionText     = $optionSelected.text(),
-                    $sod            = $select.closest(".sod_select");
+                    $sod            = $select.closest(".sod_select"),
+                    $optionColor    = $optionSelected.data("color") ? $optionSelected.data("color") : "";
 
-                $sod.find(".sod_label").get(0).lastChild.nodeValue = $optionText;
-                $sod.data("label", $optionText);
+                $sod.find(".sod_label span").get(0).lastChild.nodeValue = $optionText;
+
+                if($optionColor !== ''){
+                    $sod.find(".sod_label .square").css('background-color', $optionColor);
+                }
 
                 // Triggers the onChange callback
                 $_settings.onChange.call(this);
@@ -430,7 +437,7 @@
                         $optionActive.click();
                     }
                     else if ( !$optionActive.hasClass("selected") ) {
-                        $sod.find(".sod_label").get(0).lastChild.nodeValue = $sodLabel;
+                        $sod.find(".sod_label span").get(0).lastChild.nodeValue = $sodLabel;
                         $optionActive.removeClass("active");
                         $optionSelected.addClass("active");
                     }
@@ -515,7 +522,7 @@
                         $sodList.empty();
 
                         // Clear the label (but keep prefix)
-                        $sod.find(".sod_label").get(0).lastChild.nodeValue = "";
+                        $sod.find(".sod_label span").get(0).lastChild.nodeValue = "";
 
                         // Disable the SoD if the select is disabled
                         if ( $select.is(":disabled") ) {
