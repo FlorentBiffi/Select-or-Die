@@ -2,8 +2,9 @@
  *
  *  Name:          selectordie.js
  *  Updated:       2014-09-17
- *  Version:       0.1.6
+ *  Version:       0.1.7
  *  Created by:    Per V @ Vst.mn
+ *  Updated by:    Florent Biffi
  *  What?:         The Select or Die JS
  *
  *  Copyright (c) 2014 Per Vestman
