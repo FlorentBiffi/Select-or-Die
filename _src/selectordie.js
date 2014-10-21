@@ -184,7 +184,8 @@
                     $optionIsDisabled   = $option.is(":disabled") ? " disabled " : "",
                     $optionIsSelected   = $option.is(":selected") ? " selected active " : "",
                     $optionLink         = $option.data("link") ? " link " : "",
-                    $optionLinkExternal = $option.data("link-external") ? " linkexternal" : "";
+                    $optionLinkExternal = $option.data("link-external") ? " linkexternal" : "",
+                    $optgroupLabel        = $option.prop("label");
 
                 // Create <li> for each <option>
                 if ( $option.is("option") ) { // If <option>
@@ -459,7 +460,7 @@
                     var $sodLabel       = $sod.data("label"),
                         $sodPlaceholder   = $sod.data("placeholder"),
                         $optionActive   = $sod.find(".active"),
-                        $optionSelected = $sod.find(".selected");
+                        $optionSelected = $sod.find(".selected"),
                         $optionHasChanged = false;
 
                     // Clear viewport check timeout
